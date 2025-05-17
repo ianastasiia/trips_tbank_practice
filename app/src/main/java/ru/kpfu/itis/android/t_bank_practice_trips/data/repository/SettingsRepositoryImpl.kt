@@ -15,8 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SettingsRepositoryImpl @Inject constructor(
-    @ApplicationContext private val appContext: Context,
-    @ActivityContext private val activityContext: Context
+    @ApplicationContext private val appContext: Context
 ) : SettingsRepository {
 
     private val prefs = appContext.getSharedPreferences("app_settings", Context.MODE_PRIVATE)
@@ -37,8 +36,13 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateLanguage(language: String) {
-        prefs.edit().putString("language", language).apply()
-        updateAppLocale(language)
+        val langCode = when (language) {
+            "Русский" -> "ru"
+            "English" -> "en"
+            else -> language
+        }
+        prefs.edit().putString("language", langCode).apply()
+        updateAppLocale(langCode)
     }
 
     private fun updateAppLocale(language: String) {
@@ -50,9 +54,5 @@ class SettingsRepositoryImpl @Inject constructor(
         }
 
         appContext.resources.updateConfiguration(config, appContext.resources.displayMetrics)
-
-        if (activityContext is Activity) {
-            activityContext.recreate()
-        }
     }
 }

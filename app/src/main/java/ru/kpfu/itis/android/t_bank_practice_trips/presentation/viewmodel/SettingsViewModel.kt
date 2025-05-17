@@ -23,7 +23,18 @@ class SettingsViewModel @Inject constructor(
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
 
     init {
-        loadSettings()
+        viewModelScope.launch {
+            val settings = getSettingsUseCase()
+            _uiState.value = SettingsState(
+                settings = settings.copy(
+                    language = when (settings.language) {
+                        "Русский" -> "ru"
+                        "English" -> "en"
+                        else -> settings.language
+                    }
+                )
+            )
+        }
     }
 
     private fun loadSettings() {

@@ -22,6 +22,11 @@ import ru.kpfu.itis.android.tbank_design_system.theme.LocalExtendedColorScheme
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
     val state by viewModel.uiState.collectAsState()
+    val languageOptions = mapOf(
+        "ru" to "Русский",
+        "en" to "English"
+    )
+
 
     AppTheme {
         Column(
@@ -50,9 +55,13 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
                     title = "Язык",
                     trailingContent = {
                         Dropdown(
-                            selectedOption = state.settings.language,
-                            options = listOf("Русский", "English"),
-                            onOptionSelected = viewModel::onLanguageChanged
+                            selectedOption = languageOptions[state.settings.language] ?: "Русский",
+                            options = languageOptions.values.toList(),
+                            onOptionSelected = { selectedOption ->
+                                val selectedCode = languageOptions.entries
+                                    .find { it.value == selectedOption }?.key ?: "ru"
+                                viewModel.onLanguageChanged(selectedCode)
+                            }
                         )
                     }
                 )

@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.screens.notifications.NotificationsScreen
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.screens.settings.SettingsScreen
+import ru.kpfu.itis.android.tbank_design_system.theme.AppTheme
 
 sealed class Screen(val route: String) {
     object Trips : Screen("trips")
@@ -19,19 +20,21 @@ sealed class Screen(val route: String) {
 
 @Composable
 fun AppNavigation() {
-    val navController = rememberNavController()
+    AppTheme {
+        val navController = rememberNavController()
 
-    Scaffold(
-        bottomBar = { BottomNavigationBar(navController) }
-    ) { padding ->
-        NavHost(
-            navController = navController,
-            startDestination = Screen.Trips.route,
-            modifier = Modifier.padding(padding)
-        ) {
-            composable(Screen.Trips.route) { MainScreen() }
-            composable(Screen.Notifications.route) { NotificationsScreen() }
-            composable(Screen.Settings.route) { SettingsScreen() }
+        Scaffold(
+            bottomBar = { BottomNavigationBar(navController) }
+        ) { padding ->
+            NavHost(
+                navController = navController,
+                startDestination = Screen.Trips.route,
+                modifier = Modifier.padding(padding)
+            ) {
+                composable(Screen.Trips.route) { MainScreen() }
+                composable(Screen.Notifications.route) { NotificationsScreen() }
+                composable(Screen.Settings.route) { SettingsScreen() }
+            }
         }
     }
 }
