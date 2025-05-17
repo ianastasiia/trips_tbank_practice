@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="trips_menu">Поезки</string>
+    <string name="notifications_menu">Уведомления</string>
+    <string name="settings_menu">Настройки</string>
+
+    <string name="settings_title">Настройки</string>
+    <string name="theme">Тема</string>
+    <string name="language">Язык</string>
+</resources>
