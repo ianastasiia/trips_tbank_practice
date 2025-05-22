@@ -4,6 +4,7 @@
     <string name="notifications_menu">Notifications</string>
     <string name="settings_menu">Settings</string>
 
+    <!--    settings screen-->
     <string name="settings_title">Settings</string>
     <string name="theme">Theme</string>
     <string name="language">Language</string>

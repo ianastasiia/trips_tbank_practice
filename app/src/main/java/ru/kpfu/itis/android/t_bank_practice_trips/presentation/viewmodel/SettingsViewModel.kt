@@ -3,67 +3,65 @@ package ru.kpfu.itis.android.t_bank_practice_trips.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ru.kpfu.itis.android.t_bank_practice_trips.domain.constants.AppConstants
+import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.AppLanguage.Companion.toLanguageCode
+import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.AppLanguage.Companion.toLanguageDisplayName
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.Settings
-import ru.kpfu.itis.android.t_bank_practice_trips.domain.usecase.GetSettingsUseCase
-import ru.kpfu.itis.android.t_bank_practice_trips.domain.usecase.UpdateLanguageUseCase
-import ru.kpfu.itis.android.t_bank_practice_trips.domain.usecase.UpdateThemeUseCase
+import ru.kpfu.itis.android.t_bank_practice_trips.domain.repository.SettingsRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val getSettingsUseCase: GetSettingsUseCase,
-    private val updateThemeUseCase: UpdateThemeUseCase,
-    private val updateLanguageUseCase: UpdateLanguageUseCase
+    private val settingsRepo: SettingsRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            val settings = getSettingsUseCase()
-            _uiState.value = SettingsState(
-                settings = settings.copy(
-                    language = when (settings.language) {
-                        "Русский" -> "ru"
-                        "English" -> "en"
-                        else -> settings.language
-                    }
-                )
-            )
-        }
+        loadSettings()
     }
 
     private fun loadSettings() {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(
-                settings = getSettingsUseCase()
-            )
+        viewModelScope.launch(Dispatchers.IO) {
+            val settings = settingsRepo.getSettings()
+            withContext(Dispatchers.Main) {
+                _uiState.value = SettingsState(
+                    settings = settings.copy(
+                        language = settings.language.toLanguageDisplayName()
+                    )
+                )
+            }
         }
     }
 
     fun onThemeChanged(isEnabled: Boolean) {
-        viewModelScope.launch {
-            updateThemeUseCase(isEnabled)
-            _uiState.value = _uiState.value.copy(
-                settings = _uiState.value.settings.copy(isDarkTheme = isEnabled)
-            )
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepo.updateTheme(isEnabled)
+            withContext(Dispatchers.Main) {
+                _uiState.update { it.copy(settings = it.settings.copy(isDarkTheme = isEnabled)) }
+            }
         }
     }
 
     fun onLanguageChanged(language: String) {
-        viewModelScope.launch {
-            updateLanguageUseCase(language)
-            _uiState.value = _uiState.value.copy(
-                settings = _uiState.value.settings.copy(language = language)
+        viewModelScope.launch(Dispatchers.IO) {
+            settingsRepo.updateLanguage(
+                language.toLanguageCode()
             )
         }
     }
 }
 
 data class SettingsState(
-    val settings: Settings = Settings(false, "Русский")
+    val settings: Settings = Settings(
+        isDarkTheme = AppConstants.PREF_IS_THEME_DARK_VAL,
+        language = AppConstants.PREF_LANGUAGE_DEF_VAL
+    )
 )

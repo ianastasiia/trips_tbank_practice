@@ -1,58 +1,51 @@
 package ru.kpfu.itis.android.t_bank_practice_trips.data.repository
 
-import android.app.Activity
-import android.content.Context
-import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.first
+import ru.kpfu.itis.android.t_bank_practice_trips.data.datasource.PreferencesManager
+import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.AppLanguage.Companion.toLanguageCode
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.Settings
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.repository.SettingsRepository
-import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
 
 @Singleton
 class SettingsRepositoryImpl @Inject constructor(
-    @ApplicationContext private val appContext: Context
+    private val preferencesManager: PreferencesManager
 ) : SettingsRepository {
 
-    private val prefs = appContext.getSharedPreferences("app_settings", Context.MODE_PRIVATE)
+    private val _languageUpdates = MutableSharedFlow<String>(extraBufferCapacity = 1)
+    override val languageUpdates: SharedFlow<String> = _languageUpdates
+    private val _themeUpdates = MutableSharedFlow<Boolean>(extraBufferCapacity = 1)
+    override val themeUpdates: SharedFlow<Boolean> = _themeUpdates
 
     override suspend fun getSettings(): Settings {
-        return Settings(
-            isDarkTheme = prefs.getBoolean("is_dark_theme", false),
-            language = prefs.getString("language", "ru") ?: "ru"
-        )
+        return preferencesManager.getSettings().first()
     }
 
     override suspend fun updateTheme(isEnabled: Boolean) {
-        prefs.edit().putBoolean("is_dark_theme", isEnabled).apply()
+        preferencesManager.updateTheme(isEnabled)
         AppCompatDelegate.setDefaultNightMode(
             if (isEnabled) AppCompatDelegate.MODE_NIGHT_YES
             else AppCompatDelegate.MODE_NIGHT_NO
         )
+        _themeUpdates.emit(isEnabled)
     }
 
     override suspend fun updateLanguage(language: String) {
-        val langCode = when (language) {
-            "Русский" -> "ru"
-            "English" -> "en"
-            else -> language
-        }
-        prefs.edit().putString("language", langCode).apply()
-        updateAppLocale(langCode)
+        val langCode = language.toLanguageCode()
+        preferencesManager.updateLanguage(langCode)
+        _languageUpdates.emit(langCode)
     }
 
-    private fun updateAppLocale(language: String) {
-        val locale = Locale(language)
-        Locale.setDefault(locale)
-
-        val config = Configuration().apply {
-            setLocale(locale)
-        }
-
-        appContext.resources.updateConfiguration(config, appContext.resources.displayMetrics)
-    }
+//    private fun updateAppLocale(language: String) {
+//        val config = Configuration(appContext.resources.configuration).apply {
+//            setLocale(Locale(language))
+//        }
+//
+//        appContext.createConfigurationContext(config)
+//    }
 }

@@ -8,7 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import ru.kpfu.itis.android.t_bank_practice_trips.R
+import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.AppLanguage
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.viewmodel.SettingsViewModel
 import ru.kpfu.itis.android.tbank_design_system.components.dropdown.Dropdown
 import ru.kpfu.itis.android.tbank_design_system.components.sections.settings.SettingsItem
@@ -22,49 +25,36 @@ import ru.kpfu.itis.android.tbank_design_system.theme.LocalExtendedColorScheme
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
     val state by viewModel.uiState.collectAsState()
-    val languageOptions = mapOf(
-        "ru" to "Русский",
-        "en" to "English"
-    )
+    val languageOptions = AppLanguage.getDisplayNames()
 
 
-    AppTheme {
+    AppTheme(darkTheme = state.settings.isDarkTheme) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(Dimensions.paddingLarge)
+            modifier = Modifier.fillMaxSize().padding(Dimensions.paddingLarge)
         ) {
             Text(
-                text = "Настройки",
+                text = stringResource(R.string.settings_title),
                 style = AppTypography.titleLarge,
                 color = LocalExtendedColorScheme.current.text01,
                 modifier = Modifier.padding(bottom = Dimensions.paddingLarge)
             )
             SettingsSection {
-                SettingsItem(
-                    title = "Тема",
+                SettingsItem(title = stringResource(R.string.theme),
                     trailingContent = {
-                        Switch(
-                            checked = state.settings.isDarkTheme,
-                            onCheckedChange = viewModel::onThemeChanged
-                        )
-                    }
-                )
+                    Switch(
+                        checked = state.settings.isDarkTheme,
+                        onCheckedChange = viewModel::onThemeChanged
+                    )
+                })
 
-                SettingsItem(
-                    title = "Язык",
+                SettingsItem(title = stringResource(R.string.language),
                     trailingContent = {
-                        Dropdown(
-                            selectedOption = languageOptions[state.settings.language] ?: "Русский",
-                            options = languageOptions.values.toList(),
-                            onOptionSelected = { selectedOption ->
-                                val selectedCode = languageOptions.entries
-                                    .find { it.value == selectedOption }?.key ?: "ru"
-                                viewModel.onLanguageChanged(selectedCode)
-                            }
-                        )
-                    }
-                )
+                    Dropdown(
+                        selectedOption = state.settings.language,
+                        options = languageOptions,
+                        onOptionSelected = viewModel::onLanguageChanged
+                    )
+                })
 
             }
         }
