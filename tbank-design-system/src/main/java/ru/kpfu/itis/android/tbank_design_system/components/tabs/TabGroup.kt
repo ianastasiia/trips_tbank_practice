@@ -19,7 +19,7 @@ fun TabGroup(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = Dimensions.horizontalMargin),
+            .padding(vertical = Dimensions.paddingHorizontal),
         horizontalArrangement = Arrangement.spacedBy(
             space = Dimensions.paddingMedium,
             alignment = Alignment.CenterHorizontally

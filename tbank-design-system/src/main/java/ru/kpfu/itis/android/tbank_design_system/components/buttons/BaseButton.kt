@@ -22,6 +22,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import ru.kpfu.itis.android.tbank_design_system.theme.AppTypography
 import ru.kpfu.itis.android.tbank_design_system.theme.LocalExtendedColorScheme
@@ -30,22 +31,27 @@ import ru.kpfu.itis.android.tbank_design_system.theme.LocalExtendedColorScheme
 fun BaseButton(
     text: String? = null,
     icon: ImageVector? = null,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.wrapContentWidth(),
     onClick: () -> Unit = {},
     enabled: Boolean = true,
+    containerColor: Color = LocalExtendedColorScheme.current.yellow,
+    contentColor: Color = LocalExtendedColorScheme.current.text01,
+//    disabledContainerColor: Color = LocalExtendedColorScheme.current.base04,
+//    disabledContentColor: Color = LocalExtendedColorScheme.current.text03
 ) {
     Button(
         onClick = onClick,
         enabled = enabled,
-        modifier = modifier
-            .wrapContentWidth(),
+        modifier = modifier,
+//            .wrapContentWidth(),
 //            .padding(horizontal = 2.dp),
         contentPadding = PaddingValues(0.dp),
         shape = RoundedCornerShape(Dimensions.cornerRadiusMedium),
         colors = ButtonDefaults.buttonColors(
-            containerColor = LocalExtendedColorScheme.current.yellow,
-            contentColor = LocalExtendedColorScheme.current.text01,
-            disabledContainerColor = LocalExtendedColorScheme.current.base04,
+            containerColor = containerColor,
+            contentColor = contentColor,
+            disabledContainerColor = containerColor.copy(alpha = 0.56F),
+            disabledContentColor = contentColor.copy(alpha = 0.56F)
         ),
     ) {
         Row (
@@ -55,7 +61,7 @@ fun BaseButton(
                 Icon(
                     imageVector = it,
                     contentDescription = null,
-                    tint = LocalExtendedColorScheme.current.text01,
+                    tint = contentColor,
                     modifier = Modifier.size(24.dp)
                 )
 //                Spacer(Modifier.width(Dimensions.paddingSmall))
@@ -65,7 +71,7 @@ fun BaseButton(
                 Text(
                     text = it,
                     style = AppTypography.bodySmall,
-                    color = LocalExtendedColorScheme.current.text01
+                    color = contentColor
                 )
             }
         }

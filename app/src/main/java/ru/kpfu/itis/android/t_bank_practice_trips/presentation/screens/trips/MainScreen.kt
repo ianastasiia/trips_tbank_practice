@@ -20,8 +20,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.rememberNavController
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.Trip
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.TripStatus
+import ru.kpfu.itis.android.t_bank_practice_trips.presentation.navigation.Screen
 import ru.kpfu.itis.android.tbank_design_system.components.actions.CardItem
 import ru.kpfu.itis.android.tbank_design_system.components.buttons.BaseButton
 import ru.kpfu.itis.android.tbank_design_system.components.tabs.TabGroup
@@ -30,7 +34,7 @@ import ru.kpfu.itis.android.tbank_design_system.theme.Dimensions
 import ru.kpfu.itis.android.tbank_design_system.theme.LocalExtendedColorScheme
 
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavController) {
     var selectedTab by remember { mutableStateOf(0) }
 
     Scaffold(
@@ -46,7 +50,11 @@ fun MainScreen() {
         },
         floatingActionButton = {
             BaseButton(
-                onClick = { /* Добавить поездку */ },
+                onClick = { navController.navigate(Screen.CreateTrip.route) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                } },
                 icon = Icons.Default.Add,
                 modifier = Modifier
                     .size(56.dp)
@@ -101,6 +109,6 @@ fun TripCard(trip: Trip) {
 @Composable
 fun MainScreenPreview() {
     AppTheme {
-        MainScreen()
+        MainScreen(navController = rememberNavController())
     }
 }

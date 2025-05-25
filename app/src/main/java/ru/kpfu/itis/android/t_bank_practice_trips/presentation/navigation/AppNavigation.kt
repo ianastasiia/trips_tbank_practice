@@ -13,11 +13,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.screens.notifications.NotificationsScreen
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.screens.settings.SettingsScreen
+import ru.kpfu.itis.android.t_bank_practice_trips.presentation.screens.trips.CreateTripScreen
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.viewmodel.SettingsViewModel
 import ru.kpfu.itis.android.tbank_design_system.theme.AppTheme
 
 sealed class Screen(val route: String) {
     data object Trips : Screen("trips")
+    data object CreateTrip: Screen("create_trip")
     data object Notifications : Screen("notifications")
     data object Settings : Screen("settings")
 }
@@ -36,7 +38,8 @@ fun AppNavigation(viewModel: SettingsViewModel = hiltViewModel()) {
                 startDestination = Screen.Trips.route,
                 modifier = Modifier.padding(padding)
             ) {
-                composable(Screen.Trips.route) { MainScreen() }
+                composable(Screen.Trips.route) { MainScreen(navController = navController) }
+                composable(Screen.CreateTrip.route) { CreateTripScreen(navController = navController) }
                 composable(Screen.Notifications.route) { NotificationsScreen() }
                 composable(Screen.Settings.route) { SettingsScreen() }
             }

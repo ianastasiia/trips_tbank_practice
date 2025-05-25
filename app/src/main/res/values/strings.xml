@@ -8,4 +8,10 @@
     <string name="settings_title">Settings</string>
     <string name="theme">Theme</string>
     <string name="language">Language</string>
+
+    <!--    trips screen-->
+
+    <!--    creating a trip screen-->
+    <string name="create_trip_title">Creating a trip</string>
+
 </resources>

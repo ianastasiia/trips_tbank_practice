@@ -8,7 +8,7 @@ object Dimensions {
     val paddingMedium = 8.dp
     val paddingLarge = 16.dp
 
-    val horizontalMargin = 24.dp
+    val paddingHorizontal = 24.dp
 
     val borderWidthSelected = 2.dp
     val borderWidthDefault = 1.dp

@@ -69,6 +69,7 @@ private fun getIcon(screen: Screen): ImageVector = when (screen) {
     Screen.Trips -> Icons.Default.LocationOn
     Screen.Notifications -> Icons.Default.Notifications
     Screen.Settings -> Icons.Default.Settings
+    else -> throw IllegalArgumentException("Unknown screen")
 }
 
 @Composable
@@ -76,4 +77,5 @@ private fun getLabel(screen: Screen): String = when (screen) {
     Screen.Trips -> stringResource(R.string.trips_menu)
     Screen.Notifications -> stringResource(R.string.notifications_menu)
     Screen.Settings -> stringResource(R.string.settings_menu)
+    else -> throw IllegalArgumentException("Unknown screen")
 }
