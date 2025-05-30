@@ -23,43 +23,45 @@ import ru.kpfu.itis.android.tbank_design_system.theme.LocalExtendedColorScheme
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
-        Screen.Trips,
-        Screen.Notifications,
-        Screen.Settings
+        Screen.Trips, Screen.Notifications, Screen.Settings
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    if (currentRoute in setOf(
+            Screen.Login.route,
+            Screen.Register.route,
+        )
+    ) {
+        return
+    }
+
     NavigationBar {
         items.forEach { screen ->
             NavigationBarItem(
                 icon = {
-                    Icon(
-                        getIcon(screen),
-                        contentDescription = null,
-                        tint = if (currentRoute == screen.route) LocalExtendedColorScheme.current.primaryActive else LocalExtendedColorScheme.current.base07
-                    )
-                },
-                label = {
-                    Text(
-                        getLabel(screen),
-                        color = if (currentRoute == screen.route) LocalExtendedColorScheme.current.primaryActive else LocalExtendedColorScheme.current.base07
-                    )
-                },
-                selected = currentRoute == screen.route,
-                onClick = {
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = Color.Transparent
+                Icon(
+                    getIcon(screen),
+                    contentDescription = null,
+                    tint = if (currentRoute == screen.route) LocalExtendedColorScheme.current.primaryActive else LocalExtendedColorScheme.current.base07
                 )
+            }, label = {
+                Text(
+                    getLabel(screen),
+                    color = if (currentRoute == screen.route) LocalExtendedColorScheme.current.primaryActive else LocalExtendedColorScheme.current.base07
+                )
+            }, selected = currentRoute == screen.route, onClick = {
+                navController.navigate(screen.route) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }, colors = NavigationBarItemDefaults.colors(
+                indicatorColor = Color.Transparent
+            )
             )
         }
     }

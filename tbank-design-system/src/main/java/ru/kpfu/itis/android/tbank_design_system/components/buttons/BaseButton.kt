@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import ru.kpfu.itis.android.tbank_design_system.theme.Dimensions
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
@@ -40,13 +41,14 @@ fun BaseButton(
     modifier: Modifier = Modifier.wrapContentWidth(),
     onClick: () -> Unit = {},
     enabled: Boolean = true,
+    isLoading: Boolean = false,
     sizes: ButtonSize = ButtonSize.M,
     containerColor: Color = LocalExtendedColorScheme.current.yellow,
     contentColor: Color = LocalExtendedColorScheme.current.text01,
 ) {
     Button(
         onClick = onClick,
-        enabled = enabled,
+        enabled = enabled && !isLoading,
         modifier = modifier
             .height(sizes.height),
         contentPadding = PaddingValues(0.dp),
@@ -58,6 +60,14 @@ fun BaseButton(
             disabledContentColor = contentColor.copy(alpha = 0.56F)
         ),
     ) {
+        if(isLoading) {
+            CircularProgressIndicator(
+                color = contentColor,
+                modifier = Modifier.size(24.dp),
+                strokeWidth = 2.dp
+            )
+        }
+
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {

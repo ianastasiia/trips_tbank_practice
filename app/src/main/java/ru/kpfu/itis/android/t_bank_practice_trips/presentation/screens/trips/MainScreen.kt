@@ -1,3 +1,5 @@
+package ru.kpfu.itis.android.t_bank_practice_trips.presentation.screens.trips
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,6 +39,44 @@ import ru.kpfu.itis.android.tbank_design_system.theme.LocalExtendedColorScheme
 fun MainScreen(navController: NavController) {
     var selectedTab by remember { mutableStateOf(0) }
 
+    val demoTrips = remember {
+        listOf(
+            Trip(
+                id = "1",
+                adminId = "admin123",
+                title = "Шашлыки на даче у Олега Т.",
+                startDate = "2024-06-30",
+                endDate = "2024-07-13",
+                status = TripStatus.ACTIVE,
+                createdAt = "2024-05-15"
+            ), Trip(
+                id = "2",
+                adminId = "admin123",
+                title = "Отпуск в Сочи",
+                startDate = "2025-04-30",
+                endDate = "2025-05-13",
+                status = TripStatus.ACTIVE,
+                createdAt = "2024-05-10"
+            ), Trip(
+                id = "3",
+                adminId = "admin123",
+                title = "Путешествие в Санкт-Петербург",
+                startDate = "2023-09-05",
+                endDate = "2023-09-10",
+                status = TripStatus.COMPLETED,
+                createdAt = "2023-08-20"
+            ), Trip(
+                id = "4",
+                adminId = "admin123",
+                title = "Поездка в Берлин",
+                startDate = "2023-06-30",
+                endDate = "2023-07-07",
+                status = TripStatus.COMPLETED,
+                createdAt = "2023-05-15"
+            )
+        )
+    }
+
     Scaffold(
         modifier = Modifier.statusBarsPadding(),
         topBar = {
@@ -44,39 +84,43 @@ fun MainScreen(navController: NavController) {
                 TabGroup(
                     items = listOf("Все", "Активные", "Завершенные"),
                     selectedIndex = selectedTab,
-                    onItemSelected = { selectedTab = it }
-                )
+                    onItemSelected = { selectedTab = it })
             }
         },
         floatingActionButton = {
             BaseButton(
-                onClick = { navController.navigate(Screen.CreateTrip.route) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
+                onClick = {
+                    navController.navigate(Screen.CreateTrip.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
                     }
-                } },
-                icon = Icons.Default.Add,
-                modifier = Modifier
-                    .size(56.dp)
+                }, icon = Icons.Default.Add, modifier = Modifier.size(56.dp)
             )
 
         },
     ) { padding ->
-        TripList(
-            modifier = Modifier.padding(padding), trips = listOf(
-                Trip(
-                    "Шашлыки на даче у Олега Т.", "30.06.2024 - 13.07.2024", TripStatus.ACTIVE
-                ),
-                Trip(
-                    "Отпуск в Сочи", "30.04.2025 - 13.05.2025", TripStatus.ACTIVE
-                ),
-                Trip(
-                    "Путешествие в Санкт-Петербург", "05.09.2023 - 10.09.2023", TripStatus.COMPLETED
-                ),
-                Trip(
-                    "Поездка в Берлин", "30.06.2023 - 07.07.2023", TripStatus.COMPLETED
-                )
-            )
+        TripList(modifier = Modifier.padding(padding), trips = demoTrips.filter {
+            when (selectedTab) {
+                0 -> true
+                1 -> it.status == TripStatus.ACTIVE
+                2 -> it.status == TripStatus.COMPLETED
+                else -> true
+            }
+        }
+//            trips = listOf(
+//                Trip("Шашлыки на даче у Олега Т.", "30.06.2024 - 13.07.2024", TripStatus.ACTIVE),
+
+//                Trip(
+//                    "Отпуск в Сочи", "30.04.2025 - 13.05.2025", TripStatus.ACTIVE
+//                ),
+//                Trip(
+//                    "Путешествие в Санкт-Петербург", "05.09.2023 - 10.09.2023", TripStatus.COMPLETED
+//                ),
+//                Trip(
+//                    "Поездка в Берлин", "30.06.2023 - 07.07.2023", TripStatus.COMPLETED
+//                )
+//            )
         )
     }
 }
@@ -100,8 +144,7 @@ fun TripCard(trip: Trip) {
         title = trip.title,
         descriptionText = trip.dateRange,
         modifier = Modifier.padding(horizontal = 16.dp),
-        onClick = { /* Обработка клика */ }
-    )
+        onClick = { /* Обработка клика */ })
 }
 
 
