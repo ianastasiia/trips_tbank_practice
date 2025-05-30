@@ -22,6 +22,7 @@ import ru.kpfu.itis.android.tbank_design_system.components.buttons.BaseButton
 import ru.kpfu.itis.android.tbank_design_system.components.buttons.SecondaryButton
 import ru.kpfu.itis.android.tbank_design_system.components.inputs.InputSize
 import ru.kpfu.itis.android.tbank_design_system.components.inputs.InputTextField
+import ru.kpfu.itis.android.tbank_design_system.components.inputs.TuiTextArea
 import ru.kpfu.itis.android.tbank_design_system.theme.AppTypography
 import ru.kpfu.itis.android.tbank_design_system.theme.Dimensions
 import ru.kpfu.itis.android.tbank_design_system.theme.LocalExtendedColorScheme
@@ -53,7 +54,7 @@ fun CreateTripScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(Dimensions.paddingLarge))
 
         InputTextField(
-            fieldLabel = "Название",
+            fieldLabel = stringResource(R.string.new_trip_name),
             fieldValue = tripName.value,
             onValueChanged = { tripName.value = it },
             sizes = InputSize.L,
@@ -64,14 +65,14 @@ fun CreateTripScreen(navController: NavController) {
 
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             InputTextField(
-                fieldLabel = "Дата начала",
+                fieldLabel = stringResource(R.string.new_trip_date_start),
                 fieldValue = startDate.value,
                 onValueChanged = { startDate.value = it },
                 modifier = Modifier.weight(1f)
             )
 
             InputTextField(
-                fieldLabel = "Дата конца",
+                fieldLabel = stringResource(R.string.new_trip_date_end),
                 fieldValue = endDate.value,
                 onValueChanged = { endDate.value = it },
                 modifier = Modifier.weight(1f)
@@ -81,8 +82,8 @@ fun CreateTripScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(Dimensions.paddingLarge))
 
         InputTextField(
-            fieldLabel = "Общий бюджет",
-            fieldValue = tripName.value,
+            fieldLabel = stringResource(R.string.new_trip_budget),
+            fieldValue = budget.value,
             onValueChanged = { tripName.value = it },
             sizes = InputSize.L,
             modifier = Modifier.fillMaxWidth()
@@ -94,13 +95,23 @@ fun CreateTripScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(Dimensions.paddingLarge))
 
+        TuiTextArea(
+            label = stringResource(R.string.new_trip_description),
+            value = description.value,
+            onValueChange = { description.value = it },
+            placeholder = stringResource(R.string.new_trip_description_placeholder),
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(Dimensions.paddingLarge))
+
         ActionButtons(navController = navController)
     }
 }
 
 @Composable
 private fun ParticipantsInput() {
-    val participants = remember { mutableStateOf(listOf("Андрей", "Кира", "Александр")) }
+//    val participants = remember { mutableStateOf(listOf("Андрей", "Кира", "Александр")) }
 
     Column {
         InputTextField(
@@ -135,19 +146,22 @@ private fun ActionButtons(navController: NavController) {
         horizontalArrangement = Arrangement.End
     ) {
         BaseButton(
-            text = "Сохранить",
+            text = stringResource(R.string.button_save),
             modifier = Modifier
                 .fillMaxWidth(),
             onClick = { /* Логика сохранения */ }
         )
     }
+
+    Spacer(modifier = Modifier.height(Dimensions.paddingMedium))
+
     Row(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.End
     ) {
         SecondaryButton(
-            text = "Отменить",
+            text = stringResource(R.string.button_cancel),
             onClick = { navController.popBackStack() },
             modifier = Modifier
                 .fillMaxWidth()

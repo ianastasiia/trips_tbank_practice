@@ -32,10 +32,6 @@ enum class InputSize(val height: Dp) {
     L(56.dp), M(44.dp), S(32.dp)
 }
 
-enum class InputState {
-    Normal, Hover, Active, Error, ErrorActive, ReadOnly,
-}
-
 @Composable
 fun InputTextField(
     fieldLabel: String? = null,

@@ -13,4 +13,14 @@
 
     <!--    creating a trip screen-->
     <string name="create_trip_title">Создание поездки</string>
+    <string name="new_trip_name">Название</string>
+    <string name="new_trip_date_start">Дата начала</string>
+    <string name="new_trip_date_end">Дата конца</string>
+    <string name="new_trip_budget">Общий бюджет</string>
+    <string name="new_trip_description">Описание</string>
+    <string name="new_trip_description_placeholder">Здесь можно еще что-нибудь добавить!</string>
+
+    <string name="button_save">Сохранить</string>
+    <string name="button_cancel">Отменить</string>
+
 </resources>

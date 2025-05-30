@@ -24,8 +24,14 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.Dp
+import ru.kpfu.itis.android.tbank_design_system.components.inputs.InputSize
 import ru.kpfu.itis.android.tbank_design_system.theme.AppTypography
 import ru.kpfu.itis.android.tbank_design_system.theme.LocalExtendedColorScheme
+
+enum class ButtonSize(val height: Dp) {
+    L(56.dp), M(44.dp), S(32.dp)
+}
 
 @Composable
 fun BaseButton(
@@ -34,17 +40,15 @@ fun BaseButton(
     modifier: Modifier = Modifier.wrapContentWidth(),
     onClick: () -> Unit = {},
     enabled: Boolean = true,
+    sizes: ButtonSize = ButtonSize.M,
     containerColor: Color = LocalExtendedColorScheme.current.yellow,
     contentColor: Color = LocalExtendedColorScheme.current.text01,
-//    disabledContainerColor: Color = LocalExtendedColorScheme.current.base04,
-//    disabledContentColor: Color = LocalExtendedColorScheme.current.text03
 ) {
     Button(
         onClick = onClick,
         enabled = enabled,
-        modifier = modifier,
-//            .wrapContentWidth(),
-//            .padding(horizontal = 2.dp),
+        modifier = modifier
+            .height(sizes.height),
         contentPadding = PaddingValues(0.dp),
         shape = RoundedCornerShape(Dimensions.cornerRadiusMedium),
         colors = ButtonDefaults.buttonColors(
@@ -54,7 +58,7 @@ fun BaseButton(
             disabledContentColor = contentColor.copy(alpha = 0.56F)
         ),
     ) {
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             icon?.let {
