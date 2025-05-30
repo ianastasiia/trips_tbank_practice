@@ -21,15 +21,21 @@ val AppTypography = Typography(
     ),
     titleLarge = TextStyle(
         fontFamily = Manrope,
-        fontWeight = FontWeight.Bold,
-        fontSize = 22.sp,
-        lineHeight = 28.sp
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 36.sp,
+        lineHeight = 40.sp
     ),
     bodyLarge = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Medium,
         fontSize = 15.sp,
         lineHeight = 24.sp,
+    ),
+    bodyMedium = TextStyle(
+        fontFamily = Manrope,
+        fontWeight = FontWeight.Medium,
+        fontSize = 15.sp,
+        lineHeight = 24.sp
     ),
     bodySmall = TextStyle(
         fontFamily = Manrope,
