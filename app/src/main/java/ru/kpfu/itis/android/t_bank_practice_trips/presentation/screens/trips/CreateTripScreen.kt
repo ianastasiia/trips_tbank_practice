@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ru.kpfu.itis.android.t_bank_practice_trips.R
@@ -30,10 +31,10 @@ import ru.kpfu.itis.android.tbank_design_system.theme.LocalExtendedColorScheme
 @Composable
 fun CreateTripScreen(navController: NavController) {
 
-    val tripName = remember { mutableStateOf("") }
-    val startDate = remember { mutableStateOf("") }
-    val endDate = remember { mutableStateOf("") }
-    val budget = remember { mutableStateOf("") }
+    val tripName = remember { mutableStateOf(TextFieldValue("")) }
+    val startDate = remember { mutableStateOf(TextFieldValue("")) }
+    val endDate = remember { mutableStateOf(TextFieldValue("")) }
+    val budget = remember { mutableStateOf(TextFieldValue("")) }
     val description = remember { mutableStateOf("") }
 
     Column(
@@ -55,7 +56,7 @@ fun CreateTripScreen(navController: NavController) {
 
         InputTextField(
             fieldLabel = stringResource(R.string.new_trip_name),
-            fieldValue = tripName.value,
+            value = tripName.value,
             onValueChanged = { tripName.value = it },
             sizes = InputSize.L,
             modifier = Modifier.fillMaxWidth()
@@ -66,14 +67,14 @@ fun CreateTripScreen(navController: NavController) {
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             InputTextField(
                 fieldLabel = stringResource(R.string.new_trip_date_start),
-                fieldValue = startDate.value,
+                value = startDate.value,
                 onValueChanged = { startDate.value = it },
                 modifier = Modifier.weight(1f)
             )
 
             InputTextField(
                 fieldLabel = stringResource(R.string.new_trip_date_end),
-                fieldValue = endDate.value,
+                value = endDate.value,
                 onValueChanged = { endDate.value = it },
                 modifier = Modifier.weight(1f)
             )
@@ -83,7 +84,7 @@ fun CreateTripScreen(navController: NavController) {
 
         InputTextField(
             fieldLabel = stringResource(R.string.new_trip_budget),
-            fieldValue = budget.value,
+            value = budget.value,
             onValueChanged = { tripName.value = it },
             sizes = InputSize.L,
             modifier = Modifier.fillMaxWidth()
@@ -116,7 +117,7 @@ private fun ParticipantsInput() {
     Column {
         InputTextField(
             fieldLabel = "Добавить участника",
-            fieldValue = "",
+            value = TextFieldValue(""),
             onValueChanged = { /* Логика добавления */ },
             placeholder = "Введите имя участника",
             sizes = InputSize.L,

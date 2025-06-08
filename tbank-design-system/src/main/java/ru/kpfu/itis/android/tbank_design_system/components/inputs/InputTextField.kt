@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +22,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ru.kpfu.itis.android.tbank_design_system.R
@@ -35,17 +38,19 @@ enum class InputSize(val height: Dp) {
 @Composable
 fun InputTextField(
     fieldLabel: String? = null,
-    fieldValue: String,
+    value: TextFieldValue,
     placeholder: String? = null,
     labelOutside: Boolean = false,
     isFilled: Boolean = true,
-    onValueChanged: (String) -> Unit,
+    onValueChanged: (TextFieldValue) -> Unit,
     state: InputState = InputState.Normal,
     sizes: InputSize = InputSize.M,
     modifier: Modifier = Modifier,
     showCloseIcon: Boolean = false,
     leadingIcon: (@Composable () -> Unit)? = null,
-    trailingIcon: (@Composable () -> Unit)? = null
+    trailingIcon: (@Composable () -> Unit)? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     val baseColors = MaterialTheme.colorScheme
     val colors = LocalExtendedColorScheme.current
@@ -91,7 +96,7 @@ fun InputTextField(
             leadingIcon?.invoke()
 
             BasicTextField(
-                value = fieldValue,
+                value = value,
                 onValueChange = onValueChanged,
                 modifier = Modifier
                     .weight(1f)
@@ -100,8 +105,10 @@ fun InputTextField(
                     TextStyle(color = colors.text01)
                 ),
                 enabled = state != InputState.ReadOnly,
+                visualTransformation = visualTransformation,
+                keyboardOptions = keyboardOptions,
                 decorationBox = { innerTextField ->
-                    if (fieldValue.isEmpty() && placeholder != null) {
+                    if (value.text.isEmpty() && placeholder != null) {
                         Text(
                             text = placeholder,
                             style = AppTypography.bodyMedium,
@@ -114,7 +121,7 @@ fun InputTextField(
 
             if (showCloseIcon) {
                 IconButton(
-                    onClick = { onValueChanged("") },
+                    onClick = { onValueChanged(TextFieldValue("")) },
                     modifier = Modifier.size(24.dp)
                 ) {
                     Icon(

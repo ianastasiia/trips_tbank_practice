@@ -69,6 +69,8 @@ dependencies {
 
 //    datastore
     implementation(libs.datastore.preferences)
+    implementation(libs.androidx.security.crypto)
+
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.lifecycle.runtime.ktx)
 

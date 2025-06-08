@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -20,6 +21,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -42,8 +46,8 @@ fun LoginScreen(
     onLoginSuccess: () -> Unit,
     viewModel: AuthViewModel = hiltViewModel()
 ) {
-    var phone by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var phoneState: TextFieldValue by remember { mutableStateOf(TextFieldValue("")) }
+    var password: TextFieldValue by remember { mutableStateOf(TextFieldValue("")) }
     val loginState by viewModel.loginState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -67,13 +71,14 @@ fun LoginScreen(
         ) {
             InputTextField(
                 fieldLabel = "Телефон",
-                fieldValue = phone,
-                onValueChanged = {
-                    val cleanValue = it.replace(Regex("[^0-9]"), "")
-                    phone = formatPhoneNumber(cleanValue)
+                value = phoneState,
+                onValueChanged = { newValue ->
+                    val cleanText = newValue.text.filter { it.isDigit() }.take(10)
+                    phoneState = newValue.copy(text = cleanText)
                 },
-                placeholder = "+7 (777) 777 77 77",
+                placeholder = "(777) 777 77 77",
                 sizes = InputSize.L,
+                visualTransformation = PhoneTransformation(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = Dimensions.paddingMedium),
@@ -85,17 +90,17 @@ fun LoginScreen(
                         modifier = Modifier.padding(end = 4.dp)
                     )
                 },
-//                keyboardOptions = KeyboardOptions(
-//                    keyboardType = KeyboardType.Phone,
-//                    imeAction = ImeAction.Next
-//                ),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next
+                )
 //                keyboardActions = KeyboardActions(
 //                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
 //                )
             )
 
             InputTextField(
-                fieldValue = password,
+                value = password,
                 onValueChanged = { password = it },
                 fieldLabel = "Пароль",
                 placeholder = "Введите пароль",
@@ -103,6 +108,10 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = Dimensions.paddingMedium),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                )
             )
 
             Spacer(modifier = Modifier.height(Dimensions.paddingLarge))
@@ -112,11 +121,12 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(ButtonSize.L.height),
-                isLoading = loginState is Result.Loading,
+//                isLoading = loginState is Result.Loading,
                 onClick = {
                     viewModel.login(
                         AuthRequest(
-                            phone = cleanPhoneNumber(phone), password = password
+                            phone = phoneState.text,
+                            password = password.text
                         )
                     )
                 })

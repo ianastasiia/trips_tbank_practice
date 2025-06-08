@@ -14,12 +14,6 @@ import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.authentication.Re
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.repository.AuthRepository
 import javax.inject.Inject
 
-//sealed class AuthState {
-//    object Unauthenticated : AuthState()
-//    object Loading : AuthState()
-//    data class Error(val message: String) : AuthState()
-//    data class Authenticated(val token: String) : AuthState()
-//}
 
 sealed class Result<out T> {
     object Loading : Result<Nothing>()
@@ -42,8 +36,6 @@ class AuthViewModel @Inject constructor(
     private val _isAuthenticated = MutableStateFlow(false)
     val isAuthenticated: StateFlow<Boolean> = _isAuthenticated.asStateFlow()
 
-//    private val _authState = MutableStateFlow<AuthState>(AuthState.Unauthenticated)
-//    val authState: StateFlow<AuthState> = _authState.asStateFlow()
 
     init {
         checkAuthState()

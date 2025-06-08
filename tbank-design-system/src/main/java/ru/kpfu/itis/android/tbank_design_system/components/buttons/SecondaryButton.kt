@@ -11,7 +11,7 @@ fun SecondaryButton(
     text: String? = null,
     icon: ImageVector? = null,
     modifier: Modifier = Modifier,
-    isLoading: Boolean = false,
+//    isLoading: Boolean = false,
     onClick: () -> Unit = {},
     enabled: Boolean = true,
 ) {
@@ -22,7 +22,7 @@ fun SecondaryButton(
         modifier = modifier,
         onClick = onClick,
         enabled = enabled,
-        isLoading = isLoading,
+//        isLoading = isLoading,
         containerColor = MaterialTheme.colorScheme.secondary,
         contentColor = LocalExtendedColorScheme.current.link,
     )

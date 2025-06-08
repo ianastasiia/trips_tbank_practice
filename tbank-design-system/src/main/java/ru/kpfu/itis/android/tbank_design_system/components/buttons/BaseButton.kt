@@ -41,14 +41,14 @@ fun BaseButton(
     modifier: Modifier = Modifier.wrapContentWidth(),
     onClick: () -> Unit = {},
     enabled: Boolean = true,
-    isLoading: Boolean = false,
+//    isLoading: Boolean = false,
     sizes: ButtonSize = ButtonSize.M,
     containerColor: Color = LocalExtendedColorScheme.current.yellow,
     contentColor: Color = LocalExtendedColorScheme.current.text01,
 ) {
     Button(
         onClick = onClick,
-        enabled = enabled && !isLoading,
+        enabled = enabled,
         modifier = modifier
             .height(sizes.height),
         contentPadding = PaddingValues(0.dp),
@@ -60,13 +60,13 @@ fun BaseButton(
             disabledContentColor = contentColor.copy(alpha = 0.56F)
         ),
     ) {
-        if(isLoading) {
-            CircularProgressIndicator(
-                color = contentColor,
-                modifier = Modifier.size(24.dp),
-                strokeWidth = 2.dp
-            )
-        }
+//        if(isLoading) {
+//            CircularProgressIndicator(
+//                color = contentColor,
+//                modifier = Modifier.size(24.dp),
+//                strokeWidth = 2.dp
+//            )
+//        }
 
         Row(
             verticalAlignment = Alignment.CenterVertically
