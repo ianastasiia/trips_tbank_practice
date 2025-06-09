@@ -7,8 +7,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.kpfu.itis.android.t_bank_practice_trips.BuildConfig
 import ru.kpfu.itis.android.t_bank_practice_trips.data.api.AuthApiService
 import ru.kpfu.itis.android.t_bank_practice_trips.data.api.TripApiService
 import ru.kpfu.itis.android.t_bank_practice_trips.data.auth.AuthManager
@@ -38,10 +40,10 @@ object NetworkModule {
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
             .addInterceptor(postmanInterceptor)
-//            .addInterceptor(HttpLoggingInterceptor().apply {
-//                level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
-//                else HttpLoggingInterceptor.Level.NONE
-//            })
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+                else HttpLoggingInterceptor.Level.NONE
+            })
             .build()
     }
 

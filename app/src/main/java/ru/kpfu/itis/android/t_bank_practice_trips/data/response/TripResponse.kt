@@ -5,12 +5,12 @@ import com.google.gson.annotations.SerializedName
 
 data class TripResponse(
     @SerializedName("id") val id: Long,
-    @SerializedName("admin_id") val adminId: Long,
+    @SerializedName("adminId") val adminId: Long,
     @SerializedName("title") val title: String,
-    @SerializedName("start_date") val startDate: String,
-    @SerializedName("end_date") val endDate: String?,
+    @SerializedName("startDate") val startDate: String,
+    @SerializedName("endDate") val endDate: String?,
     @SerializedName("status") val status: String,
     @SerializedName("budget") val budget: Double?,
-    @SerializedName("created_at") val createdAt: String,
-    @SerializedName("participant_id") val participantIds: List<Long>,
+    @SerializedName("createdAt") val createdAt: String,
+    @SerializedName("participantIds") val participantIds: List<Long>,
 )

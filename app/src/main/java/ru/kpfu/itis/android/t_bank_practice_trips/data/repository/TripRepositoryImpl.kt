@@ -13,8 +13,9 @@ class TripRepositoryImpl @Inject constructor(
 ) : TripRepository {
 
     override suspend fun getTrips(token: String, status: TripStatus): List<Trip> =
-        api.getTripsByStatus(
-            token = token,
-            status = status.name
-        ).map { mapper.map(it) }
+        mapper.map(
+            api.getTripsByStatus(
+                status = status.name
+            )
+        )
 }

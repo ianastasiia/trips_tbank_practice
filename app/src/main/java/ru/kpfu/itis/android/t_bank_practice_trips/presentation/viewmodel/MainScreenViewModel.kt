@@ -26,7 +26,7 @@ class MainScreenViewModel @Inject constructor(
             0 -> null
             1 -> TripStatus.ACTIVE
             2 -> TripStatus.COMPLETED
-//            3 -> TripStatus.PLANNING
+            3 -> TripStatus.PLANNING
             else -> null
         }
 

@@ -1,14 +1,13 @@
 package ru.kpfu.itis.android.t_bank_practice_trips.data.mapper
 
 import ru.kpfu.itis.android.t_bank_practice_trips.data.response.TripResponse
-import ru.kpfu.itis.android.t_bank_practice_trips.data.response.TripsListResponse
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.Trip
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.TripStatus
 import javax.inject.Inject
 
 class TripMapper @Inject constructor() {
-    fun map(response: TripsListResponse): List<Trip> {
-        return response.items.map { item -> map(item) }
+    fun map(response: List<TripResponse>): List<Trip> {
+        return response.map { item -> map(item) }
     }
 
     fun map(response: TripResponse): Trip {

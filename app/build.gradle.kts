@@ -37,6 +37,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
@@ -66,6 +67,7 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.viewmodel)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.okhttp3.logging.interceptor)
 
 //    datastore
     implementation(libs.datastore.preferences)
