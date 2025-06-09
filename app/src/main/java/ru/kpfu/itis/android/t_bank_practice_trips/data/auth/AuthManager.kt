@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.constants.AppConstants
 import javax.inject.Inject
@@ -17,6 +18,7 @@ class AuthManager @Inject constructor(
 ) {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = AppConstants.PREF_AUTH_KEY)
     private val tokenKey = stringPreferencesKey(AppConstants.PREF_AUTH_TOKEN_KEY)
+    private val refreshTokenKey = stringPreferencesKey(AppConstants.PREF_REFRESH_TOKEN_KEY)
 
     suspend fun saveToken(token: String) {
         context.dataStore.edit { prefs ->
@@ -30,13 +32,31 @@ class AuthManager @Inject constructor(
         }
     }
 
-    fun getToken(): Flow<String?> {
+    suspend fun getToken(): String? {
         return context.dataStore.data.map { prefs ->
             prefs[tokenKey]
+        }.firstOrNull()
+    }
+
+    val isAuthenticated: Flow<Boolean> = context.dataStore.data.map { prefs ->
+        prefs[tokenKey] != null
+    }
+
+    suspend fun saveRefreshToken(token: String) {
+        context.dataStore.edit { prefs ->
+            prefs[refreshTokenKey] = token
         }
     }
 
-    fun isAuthenticated(): Flow<Boolean> {
-        return getToken().map { it != null }
+    suspend fun getRefreshToken(): String? {
+        return context.dataStore.data.map { prefs ->
+            prefs[refreshTokenKey]
+        }.firstOrNull()
+    }
+
+    suspend fun clearRefreshToken() {
+        context.dataStore.edit { prefs ->
+            prefs.remove(refreshTokenKey)
+        }
     }
 }

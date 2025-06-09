@@ -7,13 +7,17 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.kpfu.itis.android.t_bank_practice_trips.data.api.AuthApiService
+import ru.kpfu.itis.android.t_bank_practice_trips.data.api.TripApiService
 import ru.kpfu.itis.android.t_bank_practice_trips.data.auth.AuthManager
 import ru.kpfu.itis.android.t_bank_practice_trips.data.datasource.PreferencesManager
 import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.AuthMapper
+import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.TripMapper
 import ru.kpfu.itis.android.t_bank_practice_trips.data.repository.AuthRepositoryImpl
 import ru.kpfu.itis.android.t_bank_practice_trips.data.repository.SettingsRepositoryImpl
+import ru.kpfu.itis.android.t_bank_practice_trips.data.repository.TripRepositoryImpl
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.repository.AuthRepository
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.repository.SettingsRepository
+import ru.kpfu.itis.android.t_bank_practice_trips.domain.repository.TripRepository
 import javax.inject.Singleton
 
 @Module
@@ -50,6 +54,16 @@ object AppModule {
         apiService: AuthApiService, mapper: AuthMapper, authManager: AuthManager
     ): AuthRepository = AuthRepositoryImpl(
         apiService = apiService, mapper = mapper, authManager = authManager
+    )
+
+    @Provides
+    @Singleton
+    fun provideTripRepository(
+        apiService: TripApiService,
+        mapper: TripMapper
+    ): TripRepository = TripRepositoryImpl(
+        api = apiService,
+        mapper = mapper
     )
 
 }

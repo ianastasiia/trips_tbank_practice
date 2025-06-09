@@ -3,6 +3,7 @@ package ru.kpfu.itis.android.t_bank_practice_trips.domain.constants
 object AppConstants {
     const val PREF_AUTH_KEY = "auth"
     const val PREF_AUTH_TOKEN_KEY = "auth_token"
+    const val PREF_REFRESH_TOKEN_KEY = "refresh_token"
 
     const val PREF_SETTINGS_KEY = "app_settings"
 

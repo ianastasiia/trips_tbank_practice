@@ -19,7 +19,9 @@ class TripMapper @Inject constructor() {
             startDate = response.startDate,
             endDate = response.endDate,
             status = mapStatus(response.status),
+            budget = response.budget,
             createdAt = response.createdAt,
+            participantIds = response.participantIds,
         )
     }
 
@@ -27,7 +29,7 @@ class TripMapper @Inject constructor() {
         return when (status) {
             "ACTIVE" -> TripStatus.ACTIVE
             "COMPLETED" -> TripStatus.COMPLETED
-            "CANCELLED" -> TripStatus.CANCELLED
+            "DELETED" -> TripStatus.DELETED
             else -> TripStatus.PLANNING
         }
     }

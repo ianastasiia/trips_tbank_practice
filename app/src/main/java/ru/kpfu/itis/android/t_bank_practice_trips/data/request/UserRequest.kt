@@ -1,9 +1,8 @@
-package ru.kpfu.itis.android.t_bank_practice_trips.data.response
+package ru.kpfu.itis.android.t_bank_practice_trips.data.request
 
 import com.google.gson.annotations.SerializedName
 
-data class UserResponse(
-    @SerializedName("id") val id: Long,
+data class UserRequest(
     @SerializedName("phone") val phone: String,
     @SerializedName("firstName") val firstName: String,
     @SerializedName("lastName") val lastName: String,

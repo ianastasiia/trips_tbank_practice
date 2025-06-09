@@ -10,9 +10,13 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.kpfu.itis.android.t_bank_practice_trips.data.api.AuthApiService
+import ru.kpfu.itis.android.t_bank_practice_trips.data.api.TripApiService
 import ru.kpfu.itis.android.t_bank_practice_trips.data.auth.AuthManager
 import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.AuthMapper
+import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.TripMapper
 import ru.kpfu.itis.android.t_bank_practice_trips.data.network.AuthInterceptor
+import ru.kpfu.itis.android.t_bank_practice_trips.data.network.PostmanInterceptor
+import ru.kpfu.itis.android.t_bank_practice_trips.domain.repository.TripRepository
 import javax.inject.Singleton
 
 @Module
@@ -28,8 +32,13 @@ object NetworkModule {
     fun provideGson(): Gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssX").create()
 
     @Provides
-    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
-        return OkHttpClient.Builder().addInterceptor(authInterceptor)
+    fun provideOkHttpClient(
+        authInterceptor: AuthInterceptor,
+        postmanInterceptor: PostmanInterceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
+            .addInterceptor(postmanInterceptor)
 //            .addInterceptor(HttpLoggingInterceptor().apply {
 //                level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
 //                else HttpLoggingInterceptor.Level.NONE
@@ -39,8 +48,11 @@ object NetworkModule {
 
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
-        return Retrofit.Builder().baseUrl("https://api.t-travel.com/v1/").client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create(gson)).build()
+        return Retrofit.Builder()
+            .baseUrl("https://c678f6d9-fb3b-4f00-8355-6e07bb28fd00.mock.pstmn.io")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
     }
 
     @Provides
@@ -52,4 +64,16 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideAuthMapper(): AuthMapper = AuthMapper()
+
+    @Provides
+    @Singleton
+    fun provideTripApiService(retrofit: Retrofit): TripApiService {
+        return retrofit.create(TripApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTripMapper(): TripMapper = TripMapper()
+
+
 }
