@@ -16,7 +16,6 @@ import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.AuthMapper
 import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.TripMapper
 import ru.kpfu.itis.android.t_bank_practice_trips.data.network.AuthInterceptor
 import ru.kpfu.itis.android.t_bank_practice_trips.data.network.PostmanInterceptor
-import ru.kpfu.itis.android.t_bank_practice_trips.domain.repository.TripRepository
 import javax.inject.Singleton
 
 @Module
@@ -49,7 +48,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://c678f6d9-fb3b-4f00-8355-6e07bb28fd00.mock.pstmn.io")
+            .baseUrl("https://c678f6d9-fb3b-4f00-8355-6e07bb28fd00.mock.pstmn.io/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -75,5 +74,10 @@ object NetworkModule {
     @Singleton
     fun provideTripMapper(): TripMapper = TripMapper()
 
+    @Provides
+    @Singleton
+    fun providePostmanInterceptor(): PostmanInterceptor {
+        return PostmanInterceptor()
+    }
 
 }

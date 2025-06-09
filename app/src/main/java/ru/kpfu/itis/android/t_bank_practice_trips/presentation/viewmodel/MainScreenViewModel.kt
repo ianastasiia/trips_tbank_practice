@@ -2,6 +2,7 @@ package ru.kpfu.itis.android.t_bank_practice_trips.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -11,6 +12,7 @@ import ru.kpfu.itis.android.t_bank_practice_trips.domain.repository.AuthReposito
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.usecase.GetTripsUseCase
 import javax.inject.Inject
 
+@HiltViewModel
 class MainScreenViewModel @Inject constructor(
     private val getTripsUseCase: GetTripsUseCase,
     private val authRepository: AuthRepository
