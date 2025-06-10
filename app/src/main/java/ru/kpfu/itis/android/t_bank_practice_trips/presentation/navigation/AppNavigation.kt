@@ -1,5 +1,6 @@
 package ru.kpfu.itis.android.t_bank_practice_trips.presentation.navigation
 
+import AddExpenseScreen
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -31,6 +32,10 @@ sealed class Screen(val route: String) {
     data object CreateTrip : Screen("create_trip")
     data object CurrentTrip : Screen("trip/{tripId}") {
         fun createRoute(tripId: Long) = "trip/$tripId"
+    }
+
+    data object AddExpense : Screen("add_expense/{tripId}") {
+        fun createRoute(tripId: Long) = "add_expense/$tripId"
     }
 
     data object Notifications : Screen("notifications")
@@ -68,6 +73,18 @@ fun AppNavigation(
                     ) { backStackEntry ->
                         val tripId = backStackEntry.arguments?.getLong("tripId") ?: 0L
                         CurrentTripScreen(navController = navController, tripId = tripId,) }
+
+                    composable(
+                        route = Screen.AddExpense.route,
+                        arguments = listOf(navArgument("tripId") { type = NavType.LongType })
+                    ) { backStackEntry ->
+                        val tripId = backStackEntry.arguments?.getLong("tripId") ?: 0L
+                        AddExpenseScreen(
+                            onBack = { navController.popBackStack() },
+                            tripId = tripId
+                        )
+                    }
+
                     composable(Screen.Notifications.route) { NotificationsScreen() }
                     composable(Screen.Settings.route) { SettingsScreen() }
                 }

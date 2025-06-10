@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.javax.inject)
     implementation(libs.hilt)
+    implementation(libs.material)
     ksp(libs.hilt.compiler)
     implementation(libs.viewmodel)
     implementation(libs.hilt.navigation.compose)

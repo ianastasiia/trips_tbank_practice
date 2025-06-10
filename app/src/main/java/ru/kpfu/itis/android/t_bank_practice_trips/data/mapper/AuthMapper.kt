@@ -21,7 +21,7 @@ class AuthMapper {
 
     fun map(response: NetworkUserResponse): DomainUser {
         return DomainUser(
-            id = response.id.toString(),
+            id = response.id,
             phone = response.phone,
             name = response.firstName,
             surname = response.lastName,

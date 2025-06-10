@@ -13,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.kpfu.itis.android.t_bank_practice_trips.BuildConfig
 import ru.kpfu.itis.android.t_bank_practice_trips.data.api.AuthApiService
 import ru.kpfu.itis.android.t_bank_practice_trips.data.api.TripApiService
+import ru.kpfu.itis.android.t_bank_practice_trips.data.api.TripExpensesApiService
 import ru.kpfu.itis.android.t_bank_practice_trips.data.auth.AuthManager
 import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.AuthMapper
 import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.TripMapper
@@ -80,6 +81,12 @@ object NetworkModule {
     @Singleton
     fun providePostmanInterceptor(): PostmanInterceptor {
         return PostmanInterceptor()
+    }
+
+    @Provides
+    @Singleton
+    fun TripExpensesApiService(retrofit: Retrofit): TripExpensesApiService {
+        return retrofit.create(TripExpensesApiService::class.java)
     }
 
 }

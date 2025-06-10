@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -27,10 +29,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.expenses.Expense
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.expenses.ExpenseCategory
+import ru.kpfu.itis.android.t_bank_practice_trips.presentation.navigation.Screen
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.viewmodel.CurrentTripViewModel
 import ru.kpfu.itis.android.tbank_design_system.components.actions.CardItem
+import ru.kpfu.itis.android.tbank_design_system.components.buttons.BaseButton
 import ru.kpfu.itis.android.tbank_design_system.theme.AppTypography
 import ru.kpfu.itis.android.tbank_design_system.theme.Dimensions
 import ru.kpfu.itis.android.tbank_design_system.theme.LocalExtendedColorScheme
@@ -61,7 +66,16 @@ fun CurrentTripScreen(
                     }
                 }
             )
-        }
+        },
+        floatingActionButton = {
+            BaseButton(
+                onClick = {
+                    navController.navigate(Screen.AddExpense.createRoute(tripId))
+                },
+                icon = Icons.Default.Add, modifier = Modifier.size(56.dp)
+            )
+
+        },
     ) { padding ->
         Column(
             modifier = Modifier

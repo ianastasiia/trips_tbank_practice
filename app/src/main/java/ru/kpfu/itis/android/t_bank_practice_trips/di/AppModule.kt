@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.kpfu.itis.android.t_bank_practice_trips.data.api.AuthApiService
 import ru.kpfu.itis.android.t_bank_practice_trips.data.api.TripApiService
+import ru.kpfu.itis.android.t_bank_practice_trips.data.api.TripExpensesApiService
 import ru.kpfu.itis.android.t_bank_practice_trips.data.auth.AuthManager
 import ru.kpfu.itis.android.t_bank_practice_trips.data.datasource.PreferencesManager
 import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.AuthMapper
@@ -15,9 +16,11 @@ import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.ExpenseMapper
 import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.TripMapper
 import ru.kpfu.itis.android.t_bank_practice_trips.data.repository.AuthRepositoryImpl
 import ru.kpfu.itis.android.t_bank_practice_trips.data.repository.SettingsRepositoryImpl
+import ru.kpfu.itis.android.t_bank_practice_trips.data.repository.TripExpensesRepositoryImpl
 import ru.kpfu.itis.android.t_bank_practice_trips.data.repository.TripRepositoryImpl
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.repository.AuthRepository
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.repository.SettingsRepository
+import ru.kpfu.itis.android.t_bank_practice_trips.domain.repository.TripExpensesRepository
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.repository.TripRepository
 import javax.inject.Singleton
 
@@ -67,6 +70,16 @@ object AppModule {
         api = apiService,
         mapper = mapper,
         expenseMapper = expenseMapper,
+    )
+
+    @Provides
+    @Singleton
+    fun provideTripExpensesRepository(
+        apiService: TripExpensesApiService,
+        authMapper: AuthMapper,
+    ): TripExpensesRepository = TripExpensesRepositoryImpl(
+        api = apiService,
+        authMapper = authMapper,
     )
 
 }
