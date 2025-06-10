@@ -10,7 +10,7 @@ data class Trip(
     val endDate: String?,
     val status: TripStatus,
     val budget: Double? = null,
-    val createdAt: String,
+    val createdAt: String? = "",
     val participantIds: List<Long>? = null,
 ) {
     val dateRange: String

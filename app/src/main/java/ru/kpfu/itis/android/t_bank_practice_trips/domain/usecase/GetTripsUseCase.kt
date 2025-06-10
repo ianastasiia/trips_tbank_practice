@@ -10,7 +10,6 @@ class GetTripsUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(token: String, status: TripStatus): List<Trip> =
         repository.getTrips(
-            token = token,
             status = status,
         )
 }

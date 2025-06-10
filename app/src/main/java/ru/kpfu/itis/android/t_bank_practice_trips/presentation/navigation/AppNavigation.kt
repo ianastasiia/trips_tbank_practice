@@ -8,14 +8,17 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.screens.authentication.LoginScreen
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.screens.authentication.RegisterScreen
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.screens.notifications.NotificationsScreen
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.screens.settings.SettingsScreen
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.screens.trips.CreateTripScreen
+import ru.kpfu.itis.android.t_bank_practice_trips.presentation.screens.trips.CurrentTripScreen
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.screens.trips.MainScreen
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.viewmodel.AuthViewModel
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.viewmodel.SettingsViewModel
@@ -26,6 +29,10 @@ sealed class Screen(val route: String) {
     data object Register : Screen("register")
     data object Trips : Screen("trips")
     data object CreateTrip : Screen("create_trip")
+    data object CurrentTrip : Screen("trip/{tripId}") {
+        fun createRoute(tripId: Long) = "trip/$tripId"
+    }
+
     data object Notifications : Screen("notifications")
     data object Settings : Screen("settings")
 }
@@ -55,6 +62,12 @@ fun AppNavigation(
                 ) {
                     composable(Screen.Trips.route) { MainScreen(navController = navController) }
                     composable(Screen.CreateTrip.route) { CreateTripScreen(navController = navController) }
+                    composable(
+                        route = Screen.CurrentTrip.route,
+                        arguments = listOf(navArgument("tripId") { type = NavType.LongType })
+                    ) { backStackEntry ->
+                        val tripId = backStackEntry.arguments?.getLong("tripId") ?: 0L
+                        CurrentTripScreen(navController = navController, tripId = tripId,) }
                     composable(Screen.Notifications.route) { NotificationsScreen() }
                     composable(Screen.Settings.route) { SettingsScreen() }
                 }

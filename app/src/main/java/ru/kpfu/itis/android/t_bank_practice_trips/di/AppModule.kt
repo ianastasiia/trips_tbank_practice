@@ -11,6 +11,7 @@ import ru.kpfu.itis.android.t_bank_practice_trips.data.api.TripApiService
 import ru.kpfu.itis.android.t_bank_practice_trips.data.auth.AuthManager
 import ru.kpfu.itis.android.t_bank_practice_trips.data.datasource.PreferencesManager
 import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.AuthMapper
+import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.ExpenseMapper
 import ru.kpfu.itis.android.t_bank_practice_trips.data.mapper.TripMapper
 import ru.kpfu.itis.android.t_bank_practice_trips.data.repository.AuthRepositoryImpl
 import ru.kpfu.itis.android.t_bank_practice_trips.data.repository.SettingsRepositoryImpl
@@ -60,10 +61,12 @@ object AppModule {
     @Singleton
     fun provideTripRepository(
         apiService: TripApiService,
-        mapper: TripMapper
+        mapper: TripMapper,
+        expenseMapper: ExpenseMapper
     ): TripRepository = TripRepositoryImpl(
         api = apiService,
-        mapper = mapper
+        mapper = mapper,
+        expenseMapper = expenseMapper,
     )
 
 }

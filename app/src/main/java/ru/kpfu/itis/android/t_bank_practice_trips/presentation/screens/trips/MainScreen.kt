@@ -34,7 +34,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.Trip
-import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.TripStatus
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.navigation.Screen
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.viewmodel.MainScreenViewModel
 import ru.kpfu.itis.android.tbank_design_system.components.actions.CardItem
@@ -51,44 +50,6 @@ fun MainScreen(
 ) {
     var selectedTab by remember { mutableStateOf(0) }
     val state by viewModel.state.collectAsState()
-
-//    val demoTrips = remember {
-//        listOf(
-//            Trip(
-//                id = "1",
-//                adminId = "admin123",
-//                title = "Шашлыки на даче у Олега Т.",
-//                startDate = "2024-06-30",
-//                endDate = "2024-07-13",
-//                status = TripStatus.ACTIVE,
-//                createdAt = "2024-05-15"
-//            ), Trip(
-//                id = "2",
-//                adminId = "admin123",
-//                title = "Отпуск в Сочи",
-//                startDate = "2025-04-30",
-//                endDate = "2025-05-13",
-//                status = TripStatus.ACTIVE,
-//                createdAt = "2024-05-10"
-//            ), Trip(
-//                id = "3",
-//                adminId = "admin123",
-//                title = "Путешествие в Санкт-Петербург",
-//                startDate = "2023-09-05",
-//                endDate = "2023-09-10",
-//                status = TripStatus.COMPLETED,
-//                createdAt = "2023-08-20"
-//            ), Trip(
-//                id = "4",
-//                adminId = "admin123",
-//                title = "Поездка в Берлин",
-//                startDate = "2023-06-30",
-//                endDate = "2023-07-07",
-//                status = TripStatus.COMPLETED,
-//                createdAt = "2023-05-15"
-//            )
-//        )
-//    }
 
     LaunchedEffect(selectedTab) {
         viewModel.loadTrips(selectedTab)
@@ -125,41 +86,43 @@ fun MainScreen(
                 TripList(
                     modifier = Modifier.padding(padding),
                     trips = state.trips,
+                    navController = navController,
                 )
         }
-
-//        TripList(modifier = Modifier.padding(padding), trips = demoTrips.filter {
-//            when (selectedTab) {
-//                0 -> true
-//                1 -> it.status == TripStatus.ACTIVE
-//                2 -> it.status == TripStatus.COMPLETED
-//                else -> true
-//            }
-//        }
-//        )
     }
 }
 
 @Composable
-fun TripList(modifier: Modifier = Modifier, trips: List<Trip>) {
+fun TripList(
+    modifier: Modifier = Modifier,
+    trips: List<Trip>,
+    navController: NavController,
+) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(vertical = Dimensions.paddingMedium)
     ) {
         items(trips) { trip ->
-            TripCard(trip = trip)
+            TripCard(
+                trip = trip,
+                onClick = { navController.navigate(Screen.CurrentTrip.createRoute(trip.id)) }
+            )
             Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
 
 @Composable
-fun TripCard(trip: Trip) {
+fun TripCard(
+    trip: Trip,
+    onClick: () -> Unit,
+) {
     CardItem(
         title = trip.title,
         descriptionText = trip.dateRange,
         modifier = Modifier.padding(horizontal = 16.dp),
-        onClick = { /* Обработка клика */ })
+        onClick = onClick,
+    )
 }
 
 @Composable
