@@ -30,7 +30,12 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel()) {
 
     AppTheme(darkTheme = state.settings.isDarkTheme) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(Dimensions.paddingLarge)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    horizontal = Dimensions.paddingHorizontal,
+                    vertical = Dimensions.paddingLarge
+                )
         ) {
             Text(
                 text = stringResource(R.string.settings_title),

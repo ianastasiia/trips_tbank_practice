@@ -42,7 +42,7 @@ fun CardItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = Dimensions.horizontalMargin),
+            .padding(horizontal = Dimensions.paddingHorizontal),
         shape = RoundedCornerShape(Dimensions.cornerRadiusMedium),
         colors = CardDefaults.cardColors(
             containerColor = colors.elevation01,

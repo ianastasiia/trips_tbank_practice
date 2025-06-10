@@ -78,49 +78,5 @@ fun Dropdown(
                 )
             }
         }
-
-//    ExposedDropdownMenuBox(
-//        expanded = expanded,
-//        onExpandedChange = { expanded = !expanded }
-//    ) {
-//        TextField(
-//            modifier = Modifier.menuAnchor(),
-//            readOnly = true,
-//            value = selectedOption,
-//            onValueChange = {},
-//            textStyle = AppTypography.bodyLarge.copy(color = LocalExtendedColorScheme.current.text01),
-//            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-//            colors = ExposedDropdownMenuDefaults.textFieldColors(
-//                focusedContainerColor  = LocalExtendedColorScheme.current.base01,
-//                unfocusedContainerColor  = LocalExtendedColorScheme.current.base01,
-//                focusedTextColor = LocalExtendedColorScheme.current.text01,
-//                unfocusedTextColor = LocalExtendedColorScheme.current.text01,
-//                focusedTrailingIconColor = LocalExtendedColorScheme.current.text02,
-//                unfocusedTrailingIconColor = LocalExtendedColorScheme.current.text02
-//            )
-//        )
-//
-//        ExposedDropdownMenu(
-//            expanded = expanded,
-//            onDismissRequest = { expanded = false },
-//            modifier = Modifier.background(LocalExtendedColorScheme.current.base01)
-//        ) {
-//            options.forEach { option ->
-//                DropdownMenuItem(
-//                    text = {
-//                        Text(
-//                            text = option,
-//                            style = AppTypography.bodyLarge,
-//                            color = LocalExtendedColorScheme.current.text01
-//                        )
-//                    },
-//                    onClick = {
-//                        onOptionSelected(option)
-//                        expanded = false
-//                    }
-//                )
-//            }
-//        }
-//    }
     }
 }
