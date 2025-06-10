@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
+import ru.kpfu.itis.android.t_bank_practice_trips.R
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.authentication.AuthRequest
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.viewmodel.AuthViewModel
 import ru.kpfu.itis.android.tbank_design_system.components.buttons.BaseButton
@@ -71,13 +73,13 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center,
         ) {
             InputTextField(
-                fieldLabel = "Телефон",
+                fieldLabel = stringResource(R.string.phone),
                 value = phoneState,
                 onValueChanged = { newValue ->
                     val cleanText = newValue.text.filter { it.isDigit() }.take(10)
                     phoneState = newValue.copy(text = cleanText)
                 },
-                placeholder = "(777) 777 77 77",
+                placeholder = stringResource(R.string.phone_hint),
                 sizes = InputSize.L,
                 visualTransformation = PhoneTransformation(),
                 modifier = Modifier
@@ -103,8 +105,8 @@ fun LoginScreen(
             InputTextField(
                 value = password,
                 onValueChanged = { password = it },
-                fieldLabel = "Пароль",
-                placeholder = "Введите пароль",
+                fieldLabel = stringResource(R.string.password),
+                placeholder = stringResource(R.string.password),
                 sizes = InputSize.L,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -119,7 +121,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(Dimensions.paddingLarge))
 
             BaseButton(
-                text = "Войти",
+                text = stringResource(R.string.login),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(ButtonSize.L.height),
@@ -136,7 +138,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(Dimensions.paddingMedium))
 
             SecondaryButton(
-                text = "Зарегистрироваться",
+                text = stringResource(R.string.register),
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { navController.navigate("register") })
         }

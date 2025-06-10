@@ -27,13 +27,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.android.material.datepicker.MaterialDatePicker
+import ru.kpfu.itis.android.t_bank_practice_trips.R
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.authentication.User
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.expenses.ExpenseCategory
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.viewmodel.AddExpenseViewModel
@@ -41,8 +40,7 @@ import ru.kpfu.itis.android.tbank_design_system.components.buttons.BaseButton
 import ru.kpfu.itis.android.tbank_design_system.components.dropdown.Dropdown
 import ru.kpfu.itis.android.tbank_design_system.components.inputs.InputState
 import ru.kpfu.itis.android.tbank_design_system.components.inputs.InputTextField
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import kotlin.coroutines.coroutineContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,10 +55,15 @@ fun AddExpenseScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Новый расход") },
+                title = { Text(stringResource(R.string.new_expense)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(
+                                R.string.back
+                            )
+                        )
                     }
                 }
             )
@@ -109,7 +112,7 @@ fun AddExpenseScreen(
         },
         bottomBar = {
             BaseButton(
-                text = "Добавить",
+                text = stringResource(R.string.add),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
@@ -127,7 +130,7 @@ private fun AmountField(
     InputTextField(
         value = TextFieldValue(value),
         onValueChanged = { onValueChange(it.text) },
-        placeholder = "Сумма",
+        placeholder = stringResource(R.string.enter_amount),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         modifier = Modifier.fillMaxWidth()
     )
@@ -139,13 +142,16 @@ private fun CategoryDropdown(
     onSelected: (ExpenseCategory) -> Unit
 ) {
     val categories = remember { ExpenseCategory.values().toList() }
-    val selectedText = selected?.let { getCategoryName(it) } ?: "Выберите категорию"
+    val categoryNames = categories.associateWith { getCategoryName(it) }
+
+    val selectCategoryText = stringResource(R.string.select_category)
+    val selectedText = selected?.let { categoryNames[it] } ?: selectCategoryText
 
     Dropdown(
         selectedOption = selectedText,
-        options = categories.map { getCategoryName(it) },
-        onOptionSelected = { selectedText ->
-            categories.firstOrNull { getCategoryName(it) == selectedText }?.let(onSelected)
+        options = categories.map { categoryNames[it] ?: it.name },
+        onOptionSelected = { selectedName ->
+            categories.firstOrNull { categoryNames[it] == selectedName }?.let(onSelected)
         }
     )
 }
@@ -156,7 +162,8 @@ private fun PayerDropdown(
     selected: User?,
     onSelected: (User) -> Unit
 ) {
-    val selectedText = selected?.name ?: "Кто оплачивает"
+    val selectPayerText = stringResource(R.string.select_payer)
+    val selectedText = selected?.name ?: selectPayerText
 
     Dropdown(
         selectedOption = selectedText,
@@ -178,7 +185,7 @@ private fun PaidForMultiSelect(
     Box(modifier = Modifier.fillMaxWidth()) {
         InputTextField(
             value = TextFieldValue(selected.joinToString { it.name }.takeIf { it.isNotEmpty() }
-                ?: "За кого"),
+                ?: stringResource(R.string.select_participants)),
             onValueChanged = {},
             state = InputState.ReadOnly,
             modifier = Modifier
@@ -213,20 +220,21 @@ private fun TitleField(
     InputTextField(
         value = TextFieldValue(value),
         onValueChanged = { onValueChange(it.text) },
-        placeholder = "Название расхода",
+        placeholder = stringResource(R.string.enter_title),
         modifier = Modifier.fillMaxWidth()
     )
 }
 
 
+@Composable
 private fun getCategoryName(category: ExpenseCategory): String {
     return when (category) {
-        ExpenseCategory.TICKETS -> "Билеты"
-        ExpenseCategory.LODGING -> "Жильё"
-        ExpenseCategory.FOOD -> "Еда"
-        ExpenseCategory.ENTERTAINMENT -> "Развлечения"
-        ExpenseCategory.INSURANCE -> "Страховка"
-        ExpenseCategory.TRANSPORT -> "Транспорт"
-        ExpenseCategory.OTHER -> "Другое"
+        ExpenseCategory.TICKETS -> stringResource(R.string.category_tickets)
+        ExpenseCategory.LODGING -> stringResource(R.string.category_lodging)
+        ExpenseCategory.FOOD -> stringResource(R.string.category_food)
+        ExpenseCategory.ENTERTAINMENT -> stringResource(R.string.category_entertainment)
+        ExpenseCategory.INSURANCE -> stringResource(R.string.category_insurance)
+        ExpenseCategory.TRANSPORT -> stringResource(R.string.category_transport)
+        ExpenseCategory.OTHER -> stringResource(R.string.category_other)
     }
 }

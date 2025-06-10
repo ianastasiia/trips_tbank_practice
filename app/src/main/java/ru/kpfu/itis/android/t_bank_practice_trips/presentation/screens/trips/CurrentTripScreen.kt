@@ -26,10 +26,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import ru.kpfu.itis.android.t_bank_practice_trips.R
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.expenses.Expense
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.expenses.ExpenseCategory
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.navigation.Screen
@@ -61,7 +62,9 @@ fun CurrentTripScreen(
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Назад"
+                            contentDescription = stringResource(
+                                R.string.back
+                            )
                         )
                     }
                 }
@@ -101,7 +104,8 @@ fun CurrentTripScreen(
             state.trip?.let { trip ->
                 Text(
                     text = trip.title,
-                    modifier = Modifier.padding(Dimensions.paddingLarge).align(Alignment.CenterHorizontally),
+                    modifier = Modifier.padding(Dimensions.paddingLarge)
+                        .align(Alignment.CenterHorizontally),
                     style = AppTypography.titleLarge,
                     color = LocalExtendedColorScheme.current.text01,
                 )
@@ -133,14 +137,15 @@ fun ExpenseItem(expense: Expense) {
     )
 }
 
+@Composable
 fun getCategoryName(category: ExpenseCategory): String {
     return when (category) {
-        ExpenseCategory.TICKETS -> "Билеты"
-        ExpenseCategory.LODGING -> "Жилье"
-        ExpenseCategory.FOOD -> "Еда"
-        ExpenseCategory.ENTERTAINMENT -> "Развлечения"
-        ExpenseCategory.INSURANCE -> "Страховка"
-        ExpenseCategory.TRANSPORT -> "Транспорт"
-        ExpenseCategory.OTHER -> "Другое"
+        ExpenseCategory.TICKETS -> stringResource(R.string.category_tickets)
+        ExpenseCategory.LODGING -> stringResource(R.string.category_lodging)
+        ExpenseCategory.FOOD -> stringResource(R.string.category_food)
+        ExpenseCategory.ENTERTAINMENT -> stringResource(R.string.category_entertainment)
+        ExpenseCategory.INSURANCE -> stringResource(R.string.category_insurance)
+        ExpenseCategory.TRANSPORT -> stringResource(R.string.category_transport)
+        ExpenseCategory.OTHER -> stringResource(R.string.category_other)
     }
 }

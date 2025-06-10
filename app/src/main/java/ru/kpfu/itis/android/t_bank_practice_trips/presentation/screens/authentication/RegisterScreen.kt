@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -30,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
+import ru.kpfu.itis.android.t_bank_practice_trips.R
 import ru.kpfu.itis.android.t_bank_practice_trips.domain.model.authentication.RegisterRequest
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.viewmodel.AuthViewModel
 import ru.kpfu.itis.android.t_bank_practice_trips.presentation.viewmodel.Result
@@ -65,6 +67,16 @@ fun RegisterScreen(
         }
     }
 
+    val firstNameText = stringResource(R.string.first_name)
+    val lastNameText = stringResource(R.string.last_name)
+    val phoneText = stringResource(R.string.phone)
+    val phoneHint = stringResource(R.string.phone_hint)
+    val passwordText = stringResource(R.string.password)
+    val confirmPasswordText = stringResource(R.string.confirm_password)
+    val passwordDontMatch = stringResource(R.string.password_dont_match)
+    val registerText = stringResource(R.string.register)
+    val alreadyHaveAccount = stringResource(R.string.already_have_account)
+
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { innerPadding ->
         Column(
@@ -83,8 +95,8 @@ fun RegisterScreen(
                 InputTextField(
                     value = firstName,
                     onValueChanged = { firstName = it },
-                    fieldLabel = "Имя",
-                    placeholder = "Введите имя",
+                    fieldLabel = firstNameText,
+                    placeholder = firstNameText,
                     sizes = InputSize.L,
                     modifier = Modifier.weight(1f),
                     keyboardOptions = KeyboardOptions(
@@ -96,8 +108,8 @@ fun RegisterScreen(
                 InputTextField(
                     value = lastName,
                     onValueChanged = { lastName = it },
-                    fieldLabel = "Фамилия",
-                    placeholder = "Введите фамилию",
+                    fieldLabel = lastNameText,
+                    placeholder = lastNameText,
                     sizes = InputSize.L,
                     modifier = Modifier.weight(1f),
                     keyboardOptions = KeyboardOptions(
@@ -110,13 +122,13 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(Dimensions.paddingMedium))
 
             InputTextField(
-                fieldLabel = "Номер телефона",
+                fieldLabel = phoneText,
                 value = phone,
                 onValueChanged = { newValue ->
                     val cleanText = newValue.text.filter { it.isDigit() }.take(10)
                     phone = newValue.copy(text = cleanText)
                 },
-                placeholder = "(777) 777 77 77",
+                placeholder = phoneText,
                 sizes = InputSize.L,
                 visualTransformation = PhoneTransformation(),
                 modifier = Modifier
@@ -142,8 +154,8 @@ fun RegisterScreen(
             InputTextField(
                 value = password,
                 onValueChanged = { password = it },
-                fieldLabel = "Пароль",
-                placeholder = "Введите пароль",
+                fieldLabel = passwordText,
+                placeholder = passwordText,
                 sizes = InputSize.L,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -158,8 +170,8 @@ fun RegisterScreen(
             InputTextField(
                 value = confirmPassword,
                 onValueChanged = { confirmPassword = it },
-                fieldLabel = "Подтвердите пароль",
-                placeholder = "Повторите пароль",
+                fieldLabel = confirmPasswordText,
+                placeholder = confirmPasswordText,
                 sizes = InputSize.L,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -172,14 +184,14 @@ fun RegisterScreen(
             )
 
             BaseButton(
-                text = "Зарегистрироваться",
+                text = registerText,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(ButtonSize.L.height),
 //                isLoading = registerState is Result.Loading,
                 onClick = {
                     if (password != confirmPassword) {
-                        scope.launch { snackbarHostState.showSnackbar("Пароли не совпадают") }
+                        scope.launch { snackbarHostState.showSnackbar(passwordDontMatch) }
                         return@BaseButton
                     }
 
@@ -196,7 +208,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(Dimensions.paddingMedium))
 
             SecondaryButton(
-                text = "Уже есть аккаунт",
+                text = alreadyHaveAccount,
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { navController.popBackStack() })
         }

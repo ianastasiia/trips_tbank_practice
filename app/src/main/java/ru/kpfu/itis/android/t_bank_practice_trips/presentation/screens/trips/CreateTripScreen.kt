@@ -116,10 +116,10 @@ private fun ParticipantsInput() {
 
     Column {
         InputTextField(
-            fieldLabel = "Добавить участника",
+            fieldLabel = stringResource(R.string.add_participant),
             value = TextFieldValue(""),
             onValueChanged = { /* Логика добавления */ },
-            placeholder = "Введите имя участника",
+            placeholder = stringResource(R.string.enter_participant_name),
             sizes = InputSize.L,
             modifier = Modifier.fillMaxWidth()
         )
