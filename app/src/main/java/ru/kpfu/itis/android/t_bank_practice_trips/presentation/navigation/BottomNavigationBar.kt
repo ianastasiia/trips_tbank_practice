@@ -23,43 +23,45 @@ import ru.kpfu.itis.android.tbank_design_system.theme.LocalExtendedColorScheme
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
-        Screen.Trips,
-        Screen.Notifications,
-        Screen.Settings
+        Screen.Trips, Screen.Notifications, Screen.Settings
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    if (currentRoute in setOf(
+            Screen.Login.route,
+            Screen.Register.route,
+        )
+    ) {
+        return
+    }
+
     NavigationBar {
         items.forEach { screen ->
             NavigationBarItem(
                 icon = {
-                    Icon(
-                        getIcon(screen),
-                        contentDescription = null,
-                        tint = if (currentRoute == screen.route) LocalExtendedColorScheme.current.primaryActive else LocalExtendedColorScheme.current.base07
-                    )
-                },
-                label = {
-                    Text(
-                        getLabel(screen),
-                        color = if (currentRoute == screen.route) LocalExtendedColorScheme.current.primaryActive else LocalExtendedColorScheme.current.base07
-                    )
-                },
-                selected = currentRoute == screen.route,
-                onClick = {
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-                colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = Color.Transparent
+                Icon(
+                    getIcon(screen),
+                    contentDescription = null,
+                    tint = if (currentRoute == screen.route) LocalExtendedColorScheme.current.primaryActive else LocalExtendedColorScheme.current.base07
                 )
+            }, label = {
+                Text(
+                    getLabel(screen),
+                    color = if (currentRoute == screen.route) LocalExtendedColorScheme.current.primaryActive else LocalExtendedColorScheme.current.base07
+                )
+            }, selected = currentRoute == screen.route, onClick = {
+                navController.navigate(screen.route) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }, colors = NavigationBarItemDefaults.colors(
+                indicatorColor = Color.Transparent
+            )
             )
         }
     }
@@ -69,6 +71,7 @@ private fun getIcon(screen: Screen): ImageVector = when (screen) {
     Screen.Trips -> Icons.Default.LocationOn
     Screen.Notifications -> Icons.Default.Notifications
     Screen.Settings -> Icons.Default.Settings
+    else -> throw IllegalArgumentException("Unknown screen")
 }
 
 @Composable
@@ -76,4 +79,5 @@ private fun getLabel(screen: Screen): String = when (screen) {
     Screen.Trips -> stringResource(R.string.trips_menu)
     Screen.Notifications -> stringResource(R.string.notifications_menu)
     Screen.Settings -> stringResource(R.string.settings_menu)
+    else -> throw IllegalArgumentException("Unknown screen")
 }

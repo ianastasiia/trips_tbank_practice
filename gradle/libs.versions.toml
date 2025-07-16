@@ -21,7 +21,14 @@ javax-inject = "1"
 lifecycle = "2.6.1"
 
 # DataSource
-datastorePreferences = "1.1.0"
+datastorePreferences = "1.1.7"
+securityCryptoKtx = "1.1.0-alpha03"
+
+# Network
+retrofit = "2.11.0"
+okhttp = "4.12.0"
+gson = "2.13.0"
+loggingInterceptor = "4.9.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,9 +57,18 @@ javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "j
 viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferences" }
+androidx-security-crypto = { group = "androidx.security", name = "security-crypto-ktx", version.ref = "securityCryptoKtx"}
 lifecycle-runtime-compose = {group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle"}
 lifecycle-runtime-ktx = {group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle"}
 
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "loggingInterceptor" }
+
+[bundles]
+network-deps = ["retrofit", "retrofit-gson-converter", "okhttp", "gson"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

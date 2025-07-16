@@ -19,43 +19,63 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import ru.kpfu.itis.android.tbank_design_system.theme.Dimensions
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.Dp
+import ru.kpfu.itis.android.tbank_design_system.components.inputs.InputSize
 import ru.kpfu.itis.android.tbank_design_system.theme.AppTypography
 import ru.kpfu.itis.android.tbank_design_system.theme.LocalExtendedColorScheme
+
+enum class ButtonSize(val height: Dp) {
+    L(56.dp), M(44.dp), S(32.dp)
+}
 
 @Composable
 fun BaseButton(
     text: String? = null,
     icon: ImageVector? = null,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.wrapContentWidth(),
     onClick: () -> Unit = {},
     enabled: Boolean = true,
+//    isLoading: Boolean = false,
+    sizes: ButtonSize = ButtonSize.M,
+    containerColor: Color = LocalExtendedColorScheme.current.yellow,
+    contentColor: Color = LocalExtendedColorScheme.current.text01,
 ) {
     Button(
         onClick = onClick,
         enabled = enabled,
         modifier = modifier
-            .wrapContentWidth(),
-//            .padding(horizontal = 2.dp),
+            .height(sizes.height),
         contentPadding = PaddingValues(0.dp),
         shape = RoundedCornerShape(Dimensions.cornerRadiusMedium),
         colors = ButtonDefaults.buttonColors(
-            containerColor = LocalExtendedColorScheme.current.yellow,
-            contentColor = LocalExtendedColorScheme.current.text01,
-            disabledContainerColor = LocalExtendedColorScheme.current.base04,
+            containerColor = containerColor,
+            contentColor = contentColor,
+            disabledContainerColor = containerColor.copy(alpha = 0.56F),
+            disabledContentColor = contentColor.copy(alpha = 0.56F)
         ),
     ) {
-        Row (
+//        if(isLoading) {
+//            CircularProgressIndicator(
+//                color = contentColor,
+//                modifier = Modifier.size(24.dp),
+//                strokeWidth = 2.dp
+//            )
+//        }
+
+        Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             icon?.let {
                 Icon(
                     imageVector = it,
                     contentDescription = null,
-                    tint = LocalExtendedColorScheme.current.text01,
+                    tint = contentColor,
                     modifier = Modifier.size(24.dp)
                 )
 //                Spacer(Modifier.width(Dimensions.paddingSmall))
@@ -65,7 +85,7 @@ fun BaseButton(
                 Text(
                     text = it,
                     style = AppTypography.bodySmall,
-                    color = LocalExtendedColorScheme.current.text01
+                    color = contentColor
                 )
             }
         }

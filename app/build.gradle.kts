@@ -37,6 +37,7 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
     composeOptions {
@@ -63,14 +64,20 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.javax.inject)
     implementation(libs.hilt)
+    implementation(libs.material)
     ksp(libs.hilt.compiler)
     implementation(libs.viewmodel)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.okhttp3.logging.interceptor)
 
 //    datastore
     implementation(libs.datastore.preferences)
+    implementation(libs.androidx.security.crypto)
+
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.lifecycle.runtime.ktx)
+
+    implementation(libs.bundles.network.deps)
 
     implementation(project(":tbank-design-system"))
 }
